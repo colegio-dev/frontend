@@ -1,0 +1,14 @@
+
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  text-align: center;
+  color: #1d1c35;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #dadee6;
+  background-image: url("https://firebasestorage.googleapis.com/v0/b/novedades-identificaciones.appspot.com/o/img_logo%2Flogo-policia.png?alt=media&token=93a426c0-6085-4fea-9398-31727fd273e6");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-blend-mode: soft-light;
+  background-position: center top;
+}

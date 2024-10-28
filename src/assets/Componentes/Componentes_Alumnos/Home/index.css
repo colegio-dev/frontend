@@ -1,0 +1,95 @@
+/* index.css */
+.nav {
+  display: flex;
+  justify-content: end;
+  padding: 1rem;
+}
+img {
+  display: flex;
+  position: absolute;
+  left: 2%;
+  top: 2%;
+  width: 8%;
+  border-radius: 50%;
+  filter: sepia(100%) saturate(500%) hue-rotate(180deg) brightness(75%);
+}
+.titulo,
+h2 {
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #4f8aba;
+  margin-bottom: 20px;
+}
+
+.descripcion {
+  font-weight: 500;
+  font-size: 18px;
+  text-align: justify;
+  padding: 0 5rem;
+}
+h4 {
+  font-weight: 600;
+  color: #4f8aba;
+}
+
+ul {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-family: "Raleway", sans-serif;
+}
+
+.btn {
+  border: none;
+  background-color: transparent;
+  color: #fff;
+  font-weight: 700;
+  border-radius: 20px;
+  margin: 0 0.5rem;
+  padding: 0.5rem 1rem;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, #00fffc, transparent);
+  transform: translateX(-100%);
+  transition: transform 0.8s ease;
+}
+
+.btn:hover::before {
+  transform: translateX(100%);
+}
+.btn-logout:hover {
+  color: #9e0101;
+  box-shadow: 0 0 15px 5px #9e0101;
+}
+
+@media screen and (max-width: 420px) {
+  .nav {
+    display: ruby;
+    padding: 1rem;
+  }
+  img{
+    width: 15%;
+  }
+  .descripcion {
+    padding: 0 1rem;
+  }
+  ul {
+    flex-wrap: wrap;
+  }
+  .btn {
+    margin: 0.5rem 0;
+  }
+}

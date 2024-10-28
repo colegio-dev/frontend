@@ -1,0 +1,61 @@
+/* index.css */
+.contenedor {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  overflow-x: auto;
+  margin: 0 auto;
+  padding: 0;
+}
+
+h4 {
+  padding: 20px;
+}
+
+.table {
+  text-align: left;
+  vertical-align: middle;
+  width: 100%;
+  max-width: 100%;
+  table-layout: auto;
+  border-collapse: collapse;
+  text-align: justify;
+  margin-left: 3em;
+}
+
+.btn {
+  width: auto;
+  height: 50px;
+  color: #fff;
+  font-weight: 700;
+  border-radius: 10px;
+  margin: 25px;
+  overflow: hidden;
+  position: relative;
+}
+
+
+.btn-danger:hover {
+  color: #9e0101;
+  box-shadow: 0 0 15px 5px #9e0101;
+}
+
+th {
+  text-align: center;
+}
+
+.resumen {
+  max-height: 10em;
+  max-width: 5em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.resumen:hover{
+  color: blue;
+}
+
+

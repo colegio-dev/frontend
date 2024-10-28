@@ -1,0 +1,63 @@
+/* index.css */
+.contenedor {
+    width: 90%;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
+  .fecha_label{
+  position: sticky;
+  color: gray;
+  left: 2rem;
+  }
+  
+  input,
+  select,
+  textarea{
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    
+  }
+  
+  h4 {
+    padding: 20px;
+  }
+  
+  .btn {
+    width: auto;
+    height: 50px;
+    color: #fff;
+    font-weight: 700;
+    border: none;
+    border-radius: 10px;
+    margin: 25px;
+    overflow: hidden;
+    position: relative;
+    background-color: #4f8aba;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+  
+  @media (min-width: 768px) {
+    .contenedor {
+      width: 80%; 
+    }
+  }
+  
+  @media (min-width: 992px) {
+    .contenedor {
+      width: 70%;
+    }
+  }
+  
+  @media (min-width: 1200px) {
+    .contenedor {
+      width: 60%;
+    }
+  }
+  
