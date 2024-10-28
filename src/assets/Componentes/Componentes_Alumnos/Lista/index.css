@@ -1,6 +1,6 @@
 /* index.css */
 .contenedor {
-  width: 100%;
+  
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
@@ -14,7 +14,7 @@ h4 {
 }
 
 .table {
-  text-align: left;
+  text-align: center;
   vertical-align: middle;
   width: 100%;
   max-width: 100%;
@@ -58,4 +58,9 @@ th {
   color: blue;
 }
 
+@media (min-width: 1200px){
+  .contenedor{
+    width: 95% !important;
+  }
+}
 
