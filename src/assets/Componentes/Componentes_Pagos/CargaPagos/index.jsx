@@ -4,8 +4,11 @@ import { useNavigate } from "react-router-dom";
 import "./index.css";
 
 // Desarrollo local
-const URI_ALUMNOS = "http://localhost:8000/students"; // Endpoint para obtener alumnos
-const URI_PAGOS = "http://localhost:8000/invoices"; // Endpoint para registrar pagos
+/* const URI_ALUMNOS = "http://localhost:8000/students"; // Endpoint para obtener alumnos
+const URI_PAGOS = "http://localhost:8000/invoices"; // Endpoint para registrar pagos */
+
+const URI_ALUMNOS = "https://facturador-backend.onrender.com/students";
+const URI_PAGOS = "https://facturador-backend.onrender.com/invoices";
 
 const CargaPagos = () => {
   const [nombres, setNombres] = useState("");

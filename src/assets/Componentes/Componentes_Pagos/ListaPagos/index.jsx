@@ -4,7 +4,10 @@ import axios from "axios";
 import "./index.css";
 
 // Desarrollo local
-const URI = "http://localhost:8000/invoices/";
+/* const URI = "http://localhost:8000/invoices/"; */
+
+const URI = "https://facturador-backend.onrender.com/invoices/";
+
 
 // eslint-disable-next-line react/prop-types
 const ListaPagos = ({ user }) => {

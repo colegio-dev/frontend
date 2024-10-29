@@ -28,7 +28,7 @@ function Login({ setUser }) {
         setIsLoading(false);
         return;
       }
-      const response = await axios.post( 'http://localhost:8000/logins/'  /* 'https://sistema-novedades-backend.onrender.com/logins' */, {
+      const response = await axios.post( /* 'http://localhost:8000/logins/' */  'https://facturador-backend.onrender.com/logins', {
         username,
         password
       });
