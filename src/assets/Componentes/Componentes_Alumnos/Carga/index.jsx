@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 //desarrollo local
 /* const URI = "http://localhost:8000/students/"; */
 //desarrollo en produccion
-const URI = 'https://facturador-backend.onrender.com/students/';
+const URI = 'https://facturador-backend.onrender.com/students/'
 
 const CargaAlumno = () => {
   const [nombres, setNombres] = useState("");
