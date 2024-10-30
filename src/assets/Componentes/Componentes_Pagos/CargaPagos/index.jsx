@@ -17,6 +17,7 @@ const CargaPagos = () => {
   const [tipoPago, setTipoPago] = useState("");
   const [importe, setImporte] = useState("");
   const [numCuota, setNumCuota] = useState("");
+  const [comprobante, setComprobante] = useState("");
   const [alumnos, setAlumnos] = useState([]); // Lista de alumnos
   const navigate = useNavigate();
 
@@ -75,6 +76,7 @@ const CargaPagos = () => {
         tipoPago: tipoPago,
         importe: importe,
         numCuota: numCuota,
+        comprobante: comprobante
       });
 
       navigate("/ListaPagos");
@@ -157,6 +159,10 @@ const CargaPagos = () => {
               </option>
             ))}
           </select>
+          <input type="text "
+            value={comprobante}
+            onChange={(e)=> setComprobante(e.target.value)}
+          />
 
           <input type="submit" className="btn" value="Guardar" />
         </form>
