@@ -85,7 +85,7 @@ const ListaPagos = ({ user }) => {
             filteredPagos.map((pago, index) => (
               <div key={pago.id || `${pago.dni}-${index}`} id="card">
                 <div className="headerCard">
-                  <p>Id: {pago.id}</p>
+                  {/* <p>Id: {pago.id}</p> */}
                   <p>Nombres: {pago.nombres}</p>
                   <p>Apellido: {pago.apellido}</p>
                   <p>DNI: {pago.dni}</p>
