@@ -21,14 +21,18 @@ const ListaAlumnos = ({ user }) => {
     getAlumnos();
   }, []);
 
+ 
+
   const getAlumnos = async () => {
     try {
       const res = await axios.get(URI);
-      setAlumnos(Array.isArray(res.data) ? res.data : []);
+      const data = Array.isArray(res.data) ? res.data : [];
+      setAlumnos(data);
     } catch (error) {
       console.error("Error al obtener los alumnos:", error);
     }
   };
+
 
   const deleteAlumno = async (id) => {
     if (!id) {
@@ -142,6 +146,7 @@ const ListaAlumnos = ({ user }) => {
     <>
       <div className="contenedor">
         <h2>Lista de Alumnos</h2>
+        
         <table className="table table-responsive">
           <thead>
             <tr className="titulos">
