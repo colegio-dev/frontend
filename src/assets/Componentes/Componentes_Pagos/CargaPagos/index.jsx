@@ -1,14 +1,15 @@
-import { useState, useEffect } from "react";
+/* import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./index.css";
 
 // Desarrollo local
-/* const URI_ALUMNOS = "http://localhost:8000/students"; // Endpoint para obtener alumnos
-const URI_PAGOS = "http://localhost:8000/invoices"; // Endpoint para registrar pagos */
+const URI_ALUMNOS = "http://localhost:8000/students";
+const URI_PAGOS = "http://localhost:8000/invoices";
 
-const URI_ALUMNOS = "https://facturador-backend.onrender.com/students";
-const URI_PAGOS = "https://facturador-backend.onrender.com/invoices";
+
+//const URI_ALUMNOS = "https://facturador-backend.onrender.com/students";
+//const URI_PAGOS = "https://facturador-backend.onrender.com/invoices"; 
 
 const CargaPagos = () => {
   const [nombres, setNombres] = useState("");
@@ -91,7 +92,7 @@ const CargaPagos = () => {
         <form onSubmit={store}>
           <h4 className="form-titulo">Carga de Pago de Cuotas</h4>
 
-          {/* Dropdown para seleccionar un alumno por DNI */}
+          
           <select
             name="dni"
             value={dni}
@@ -106,7 +107,7 @@ const CargaPagos = () => {
             ))}
           </select>
 
-          {/* Nombres y apellidos autocompletados */}
+          
           <input
             type="text"
             name="nombres"
@@ -124,7 +125,7 @@ const CargaPagos = () => {
             disabled
           />
 
-          {/* Selección de tipo de pago */}
+          
           <select
             name="tipoPago"
             value={tipoPago}
@@ -137,7 +138,7 @@ const CargaPagos = () => {
             <option value="Tarjeta de Crédito/Débito">Tarjeta de Crédito/Débito</option>
           </select>
 
-          {/* Importe y número de cuota */}
+          
           <input
             type="number"
             name="importe"
@@ -168,6 +169,166 @@ const CargaPagos = () => {
         </form>
       </div>
     </>
+  );
+};
+export default CargaPagos;
+
+ */
+
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import "./index.css";
+
+const URI_ALUMNOS = "http://localhost:8000/students";
+const URI_PAGOS = "http://localhost:8000/invoices";
+
+const CargaPagos = () => {
+  const [nombreAlumno, setNombreAlumno] = useState("");
+  const [apellidoAlumno, setApellidoAlumno] = useState("");
+  const [dniAlumno, setDniAlumno] = useState("");
+  const [tipoPago, setTipoPago] = useState("");
+  const [importe, setImporte] = useState("");
+  const [numCuota, setNumCuota] = useState("");
+  const [comprobante, setComprobante] = useState("");
+  const [alumnos, setAlumnos] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    getAlumnos();
+  }, []);
+
+  const getAlumnos = async () => {
+    try {
+      const res = await axios.get(URI_ALUMNOS);
+      setAlumnos(res.data);
+    } catch (error) {
+      console.error("Error al obtener los alumnos:", error);
+    }
+  };
+
+  const handleDniChange = (dniIngresado) => {
+    setDniAlumno(dniIngresado);
+    const alumnoSeleccionado = alumnos.find((alumno) => String(alumno.dniAlumno) === dniIngresado);
+
+    if (alumnoSeleccionado) {
+      setNombreAlumno(alumnoSeleccionado.nombreAlumno);
+      setApellidoAlumno(alumnoSeleccionado.apellidoAlumno);
+    } else {
+      setNombreAlumno("");
+      setApellidoAlumno("");
+    }
+  };
+
+  const validateImporte = (value) => {
+    const numberValue = parseFloat(value);
+    return !isNaN(numberValue) && numberValue > 0;
+  };
+
+  const store = async (e) => {
+    e.preventDefault();
+
+    if (!validateImporte(importe)) {
+      alert("El importe debe ser un número positivo.");
+      return;
+    }
+
+    try {
+      await axios.post(URI_PAGOS, {
+        nombreAlumno,
+        apellidoAlumno,
+        dniAlumno,
+        tipoPago,
+        importe,
+        numCuota,
+        comprobante,
+      });
+
+      navigate("/ListaPagos");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  return (
+    <div>
+      <form onSubmit={store}>
+        <h4 className="form-titulo">Carga de Pago de Cuotas</h4>
+        <select
+          name="dniAlumno"
+          value={dniAlumno}
+          onChange={(e) => handleDniChange(e.target.value)}
+          required
+        >
+          <option value="">Seleccione un alumno por DNI</option>
+          {alumnos.map((alumno) => (
+            <option key={alumno.dniAlumno} value={alumno.dniAlumno}>
+              {alumno.nombreAlumno} {alumno.apellidoAlumno} - DNI: {alumno.dniAlumno}
+            </option>
+          ))}
+        </select>
+
+        <input
+          type="text"
+          name="nombreAlumno"
+          placeholder="Nombres"
+          value={nombreAlumno}
+          readOnly
+          disabled
+        />
+        <input
+          type="text"
+          name="apellidoAlumno"
+          placeholder="Apellido"
+          value={apellidoAlumno}
+          readOnly
+          disabled
+        />
+
+        <select
+          name="tipoPago"
+          value={tipoPago}
+          onChange={(e) => setTipoPago(e.target.value)}
+          required
+        >
+          <option value="">Seleccione una opción</option>
+          <option value="Transferencia">Transferencia</option>
+          <option value="Efectivo">Efectivo</option>
+          <option value="Tarjeta de Crédito/Débito">Tarjeta de Crédito/Débito</option>
+        </select>
+
+        <input
+          type="number"
+          name="importe"
+          placeholder="Ingrese el Importe"
+          value={importe}
+          onChange={(e) => setImporte(e.target.value)}
+          required
+        />
+
+        <select
+          name="numCuota"
+          value={numCuota}
+          onChange={(e) => setNumCuota(e.target.value)}
+        >
+          <option value="">Seleccione la Cuota</option>
+          {[...Array(12).keys()].map((cuota) => (
+            <option key={cuota + 1} value={cuota + 1}>
+              {cuota + 1}
+            </option>
+          ))}
+        </select>
+
+        <input
+          type="text"
+          placeholder="Comprobante"
+          value={comprobante}
+          onChange={(e) => setComprobante(e.target.value)}
+        />
+
+        <input type="submit" className="btn" value="Guardar" />
+      </form>
+    </div>
   );
 };
 

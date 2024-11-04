@@ -1,4 +1,4 @@
-.container-cards {
+/* .container-cards {
   display: flex;
   
   justify-content: space-between;
@@ -69,4 +69,108 @@
   .btn-danger:hover {
     background-color: #c82333;
   }
-  
+   */
+
+   /* Container de las tarjetas y filtros */
+
+   /* index.css */
+
+.container-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px; /* Añade espacio entre filtros y tarjetas */
+  justify-content: space-between;
+  align-items: flex-start;
+  margin: 0 auto;
+  padding: 20px;
+  max-width: 1200px;
+}
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px; /* Espacio entre tarjetas */
+  justify-content: center; /* Centra las tarjetas si hay espacio sobrante */
+  width: 100%;
+}
+
+#card {
+  flex: 1 1 calc(33.33% - 20px); /* Configura el ancho de las tarjetas en una rejilla */
+  max-width: 300px;
+  margin-bottom: 20px;
+  background-color: #f5f5f5;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Añade sombra para resaltar las tarjetas */
+  transition: transform 0.3s ease; /* Efecto de hover */
+}
+
+#card:hover {
+  transform: scale(1.05); /* Aumenta el tamaño en hover */
+}
+
+.filtros {
+  flex: 1 1 100%; /* Se adapta a la pantalla en móviles */
+  max-width: 250px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Espacio entre filtros */
+}
+
+.headerCard {
+  padding: 10px;
+  background-color: #f2f2f2;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.headerCard img {
+  width: 100%;
+  max-width: 250px;
+  height: auto;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.headerCard p {
+  margin: 0;
+  text-align: left;
+}
+
+.btn-danger {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+}
+
+@media screen and (max-width: 1024px) {
+  #card {
+    flex: 1 1 calc(50% - 20px);
+  }
+
+  .filtros {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  #card {
+    flex: 1 1 100%;
+  }
+
+  .filtros {
+    width: 100%;
+  }
+}

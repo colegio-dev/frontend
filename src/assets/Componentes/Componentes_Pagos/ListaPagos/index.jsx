@@ -1,13 +1,11 @@
-
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "./index.css";
 
 // Desarrollo local
-/* const URI = "http://localhost:8000/invoices/"; */
+const URI = "http://localhost:8000/invoices/";
 
-const URI = "https://facturador-backend.onrender.com/invoices/";
-
+/* const URI = "https://facturador-backend.onrender.com/invoices/"; */
 
 // eslint-disable-next-line react/prop-types
 const ListaPagos = ({ user }) => {
@@ -22,11 +20,11 @@ const ListaPagos = ({ user }) => {
   const getPagos = async () => {
     try {
       const res = await axios.get(URI);
-      console.log("Respuesta del servidor:", res.data); // Log de la respuesta
+      console.log("Respuesta del servidor:", res.data);
       if (Array.isArray(res.data)) {
         setPagos(res.data);
       } else if (res.data && res.data.results) {
-        setPagos(res.data.results); // Ajusta esto según la estructura de tu respuesta
+        setPagos(res.data.results);
       } else {
         console.error("Error: La respuesta no es un array ni contiene los datos esperados");
       }
@@ -44,7 +42,7 @@ const ListaPagos = ({ user }) => {
     const confirmDelete = window.confirm("¿Estás seguro de que deseas eliminar este pago?");
     if (confirmDelete) {
       try {
-        console.log("Intentando eliminar el pago con ID:", id); // Log para confirmar el ID
+        console.log("Intentando eliminar el pago con ID:", id);
         const res = await axios.delete(`${URI}${id}`);
         if (res.status === 200) {
           console.log("Pago eliminado con éxito");
@@ -58,14 +56,14 @@ const ListaPagos = ({ user }) => {
     }
   };
 
-  // Filtrar los pagos por DNI
+  // Filtrar los pagos por apellido
   const handleFilterChange = (e) => {
     setFilter(e.target.value);
   };
 
-  // Filtrar pagos por el DNI ingresado
+  // Filtrar pagos por el apellido ingresado
   const filteredPagos = pagos.filter(
-    (pago) => pago.dni && String(pago.dni).includes(filter) // Convertir DNI a string y verificar que no sea null/undefined
+    (pago) => pago.apellido && pago.apellido.toLowerCase().includes(filter.toLowerCase())
   );
 
   return (
@@ -74,7 +72,7 @@ const ListaPagos = ({ user }) => {
       <div>
         <input
           type="text"
-          placeholder="Filtrar por DNI"
+          placeholder="Filtrar por Apellido"
           value={filter}
           onChange={handleFilterChange}
         />
@@ -83,9 +81,8 @@ const ListaPagos = ({ user }) => {
         <div className="cards">
           {filteredPagos.length > 0 ? (
             filteredPagos.map((pago, index) => (
-              <div key={pago.id || `${pago.dni}-${index}`} id="card">
+              <div key={pago.id || `${pago.apellido}-${index}`} id="card">
                 <div className="headerCard">
-                  {/* <p>Id: {pago.id}</p> */}
                   <p>Nombres: {pago.nombres}</p>
                   <p>Apellido: {pago.apellido}</p>
                   <p>DNI: {pago.dni}</p>
@@ -96,10 +93,7 @@ const ListaPagos = ({ user }) => {
                 {user === 1 && (
                   <button
                     className="btn btn-danger"
-                    onClick={() => {
-                      console.log("ID del pago a eliminar:", pago.id); // Log del id del pago que se va a eliminar
-                      deletePagos(pago.id);
-                    }}
+                    onClick={() => deletePagos(pago.id)}
                   >
                     <i className="fas fa-trash-alt"></i>
                   </button>
@@ -108,7 +102,7 @@ const ListaPagos = ({ user }) => {
               </div>
             ))
           ) : (
-            <p>No se encontraron pagos para el DNI ingresado.</p>
+            <p>No se encontraron pagos para el apellido ingresado.</p>
           )}
         </div>
       </div>
@@ -117,4 +111,3 @@ const ListaPagos = ({ user }) => {
 };
 
 export default ListaPagos;
-

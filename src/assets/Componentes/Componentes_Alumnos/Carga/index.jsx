@@ -1,76 +1,149 @@
 import "./index.css";
 import axios from "axios";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
-//desarrollo local
 /* const URI = "http://localhost:8000/students/"; */
-//desarrollo en produccion
-const URI = 'https://facturador-backend.onrender.com/students/'
+
+const URI = "https://facturador-backend.onrender.com/students";
 
 const CargaAlumno = () => {
-  const [nombres, setNombres] = useState("");
-  const [apellido, setApellido] = useState("");
-  const [dni, setDni] = useState("");
+  const [nombreAlumno, setNombreAlumno] = useState("");
+  const [apellidoAlumno, setApellidoalumno] = useState("");
+  const [dniAlumno, setDniAlumno] = useState("");
+  const [fechaNac, setFechaNac] = useState("");
   const [domicilio, setDomicilio] = useState("");
   const [grado, setGrado] = useState("");
-  const [tutor, setTutor] = useState("");
-  const [telefono, setTelefono] = useState("");
+  const [nombrePadre, setNombrePadre] = useState("");
+  const [dniPadre, setDniPadre] = useState("");
+  const [telefonoPadre, setTelefonoPadre] = useState("");
+  const [nombreMadre, setNombreMadre] = useState("");
+  const [dniMadre, setDniMadre] = useState("");
+  const [telefonoMadre, setTelefonoMadre] = useState("");
   const [observaciones, setObservaciones] = useState("");
-  const [loading, setLoading] = useState(false); // Estado para manejar el spinner
-  const [error, setError] = useState(""); // Estado para manejar errores
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
-  //procedimiento para guardar el alumno
+  // Estados de error separados
+  const [errorDniAlumno, setErrorDniAlumno] = useState("");
+  const [errorDniPadre, setErrorDniPadre] = useState("");
+  const [errorDniMadre, setErrorDniMadre] = useState("");
+  const [errorTelefonoPadre, setErrorTelefonoPadre] = useState("");
+  const [errorTelefonoMadre, setErrorTelefonoMadre] = useState("");
+  const [generalError, setGeneralError] = useState("");
+
+  const [existingAlumnoId, setExistingAlumnoId] = useState(null);
+  const navigate = useNavigate();
+  const { id } = useParams();
+
+  useEffect(() => {
+    if (id) {
+      const fetchAlumno = async () => {
+        const response = await axios.get(`${URI}${id}`);
+        const alumno = response.data;
+        setNombreAlumno(alumno.nombreAlumno);
+        setApellidoalumno(alumno.apellidoAlumno);
+        setDniAlumno(alumno.dniAlumno);
+        setFechaNac(alumno.fechaNac);
+        setDomicilio(alumno.domicilio);
+        setGrado(alumno.grado);
+        setNombrePadre(alumno.nombrePadre);
+        setDniPadre(alumno.dniPadre);
+        setTelefonoPadre(alumno.telefonoPadre);
+        setNombreMadre(alumno.nombreMadre);
+        setDniMadre(alumno.dniMadre);
+        setTelefonoMadre(alumno.telefonoMadre);
+        setObservaciones(alumno.observaciones);
+        setExistingAlumnoId(alumno.id);
+      };
+      fetchAlumno();
+    }
+  }, [id]);
+
   const store = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError("");
+    setGeneralError("");
+
     try {
-      await axios.post(URI, {
-        nombres,
-        apellido,
-        dni,
+      const response = await axios.get(`${URI}check-duplicate`, {
+        params: { dniAlumno, excludeId: existingAlumnoId },
+      });
+      const { isDuplicate } = response.data;
+
+      if (isDuplicate) {
+        setGeneralError("El DNI ingresado ya está registrado.");
+        setLoading(false);
+        return;
+      }
+
+      const data = {
+        nombreAlumno,
+        apellidoAlumno,
+        dniAlumno,
+        fechaNac,
         domicilio,
         grado,
-        tutor,
-        telefono,
+        nombrePadre,
+        dniPadre,
+        telefonoPadre,
+        nombreMadre,
+        dniMadre,
+        telefonoMadre,
         observaciones,
-      });
+      };
+
+      if (existingAlumnoId) {
+        await axios.put(`${URI}${existingAlumnoId}`, data);
+      } else {
+        await axios.post(URI, data);
+      }
+
       navigate("/Lista");
     } catch (error) {
-      setError("Ocurrió un error al cargar el alumno. Inténtalo nuevamente.");
+      setGeneralError("Ocurrió un error al cargar el alumno. Inténtalo nuevamente.");
       console.error(error);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleDniChange = (e) => {
+  const handleDniChangeAlumno = (e) => {
     const value = e.target.value;
-
-    // Validación para que solo se acepten números y entre 7 y 8 dígitos
     if (/^\d{0,8}$/.test(value)) {
-      setDni(value);
-      setError(
-        value.length >= 7 ? "" : "El DNI debe tener entre 7 y 8 dígitos"
-      );
+      setDniAlumno(value);
+      setErrorDniAlumno(value.length >= 7 ? "" : "El DNI debe tener entre 7 y 8 dígitos");
+    }
+  };
+  
+  const handleDniChangePadre = (e) => {
+    const value = e.target.value;
+    if (/^\d{0,8}$/.test(value)) {
+      setDniPadre(value);
+      setErrorDniPadre(value.length >= 7 ? "" : "El DNI debe tener entre 7 y 8 dígitos");
+    }
+  };
+  
+  const handleDniChangeMadre = (e) => {
+    const value = e.target.value;
+    if (/^\d{0,8}$/.test(value)) {
+      setDniMadre(value);
+      setErrorDniMadre(value.length >= 7 ? "" : "El DNI debe tener entre 7 y 8 dígitos");
+    }
+  };
+  
+  const handleTelefonoChangePadre = (e) => {
+    const value = e.target.value;
+    if (/^\d{0,15}$/.test(value)) {
+      setTelefonoPadre(value);
+      setErrorTelefonoPadre(value.length >= 10 && value.length <= 15 ? "" : "El número debe tener entre 10 y 15 dígitos.");
     }
   };
 
-  const handleTelefonoChange = (e) => {
+  const handleTelefonoChangeMadre = (e) => {
     const value = e.target.value;
-
-    // Expresión regular para permitir solo dígitos y un máximo de 15 caracteres
     if (/^\d{0,15}$/.test(value)) {
-      setTelefono(value);
-
-      // Verificar si el número tiene entre 10 y 15 dígitos
-      if (value.length >= 10 && value.length <= 15) {
-        setError("");
-      } else {
-        setError("El número debe tener entre 10 y 15 dígitos.");
-      }
+      setTelefonoMadre(value);
+      setErrorTelefonoMadre(value.length >= 10 && value.length <= 15 ? "" : "El número debe tener entre 10 y 15 dígitos.");
     }
   };
 
@@ -78,15 +151,15 @@ const CargaAlumno = () => {
     <div>
       <form method="post" className="form-register" onSubmit={store}>
         <h4 className="form-titulo">Carga de Alumno</h4>
-        <div className="contenedor">
+        <div className="contenedor-carga">
           <input
             type="text"
             name="nombres"
             id="nombres"
             placeholder="Nombres"
             required
-            value={nombres}
-            onChange={(e) => setNombres(e.target.value)}
+            value={nombreAlumno}
+            onChange={(e) => setNombreAlumno(e.target.value)}
           />
           <input
             type="text"
@@ -94,17 +167,24 @@ const CargaAlumno = () => {
             id="apellido"
             placeholder="Apellido"
             required
-            value={apellido}
-            onChange={(e) => setApellido(e.target.value)}
+            value={apellidoAlumno}
+            onChange={(e) => setApellidoalumno(e.target.value)}
           />
           <input
             type="text"
-            id="dni"
-            value={dni}
-            onChange={handleDniChange}
+            id="dniAlumno"
+            value={dniAlumno}
+            onChange={handleDniChangeAlumno}
             placeholder="Ingrese su DNI"
           />
-          {error && <span style={{ color: "red" }}>{error}</span>}
+          {errorDniAlumno && <span style={{ color: "red" }}>{errorDniAlumno}</span>}
+          <input 
+          type="date" 
+          name="fechaNac" 
+          placeholder="Fecha de Nacimiento"
+          value={fechaNac}
+          onChange={(e)=>setFechaNac(e.target.value)}
+          />
           <input
             type="text"
             name="domicilio"
@@ -133,21 +213,52 @@ const CargaAlumno = () => {
 
           <input
             type="text"
-            id="tutor"
-            name="tutor"
-            placeholder="Tutor"
+            name="nombrePadre"
+            placeholder="Nombre completo del padre"
             required
-            value={tutor}
-            onChange={(e) => setTutor(e.target.value)}
+            value={nombrePadre}
+            onChange={(e) => setNombrePadre(e.target.value)}
           />
+          <input
+            type="text"
+            id="dni"
+            value={dniPadre}
+            onChange={handleDniChangePadre}
+            placeholder="Ingrese su DNI"
+          />
+          {errorDniPadre && <span style={{ color: "red" }}>{errorDniPadre}</span>}
           <input
         type="text"
         id="telefono"
-        value={telefono}
-        onChange={handleTelefonoChange}
+        value={telefonoPadre}
+        onChange={handleTelefonoChangePadre}
         placeholder="Ingrese su número de teléfono"
       />
-      {error && <span style={{ color: "red" }}>{error}</span>}
+      {errorTelefonoPadre && <span style={{ color: "red" }}>{errorTelefonoPadre}</span>}
+      <input
+            type="text"
+            name="nombreMadre"
+            placeholder="Nombre completo de la madre"
+            required
+            value={nombreMadre}
+            onChange={(e) => setNombreMadre(e.target.value)}
+          />
+          <input
+            type="text"
+            id="dni"
+            value={dniMadre}
+            onChange={handleDniChangeMadre}
+            placeholder="Ingrese su DNI"
+          />
+          {errorDniMadre && <span style={{ color: "red" }}>{errorDniMadre}</span>}
+          <input
+        type="text"
+        id="telefono"
+        value={telefonoMadre}
+        onChange={handleTelefonoChangeMadre}
+        placeholder="Ingrese su número de teléfono"
+      />
+      {errorTelefonoMadre && <span style={{ color: "red" }}>{errorTelefonoMadre}</span>}
           <input
             type="text"
             name="observaciones"
@@ -162,7 +273,7 @@ const CargaAlumno = () => {
           ) : (
             <input type="submit" value="Cargar" className="btn btn-enviar" />
           )}
-          {error && <p className="error">{error}</p>}
+          {generalError && <p style={{ color: "red" }}>{generalError}</p>}
         </div>
       </form>
     </div>

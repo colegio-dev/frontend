@@ -24,7 +24,7 @@ const ListaAlumnos = ({ user }) => {
   const getAlumnos = async () => {
     try {
       const res = await axios.get(URI);
-      setAlumnos(res.data);
+      setAlumnos(Array.isArray(res.data) ? res.data : []);
     } catch (error) {
       console.error("Error al obtener los alumnos:", error);
     }
@@ -145,13 +145,18 @@ const ListaAlumnos = ({ user }) => {
         <table className="table table-responsive">
           <thead>
             <tr className="titulos">
-              <th scope="col">Nombre</th>
+              <th scope="col">Nombres</th>
               <th scope="col">Apellido</th>
               <th scope="col">Dni</th>
+              <th scope="col">Fecha de Nacimiento</th>
               <th scope="col">Domicilio</th>
               <th scope="col">Grado/Año</th>
-              <th scope="col">Tutor</th>
-              <th scope="col">Telefono</th>
+              <th scope="col">Nombre del Padre</th>
+              <th scope="col">Dni del Padre</th>
+              <th scope="col">Telefono del Padre</th>
+              <th scope="col">Nombre del Madre</th>
+              <th scope="col">Dni de la Madre</th>
+              <th scope="col">Telefono de la Madre</th>
               <th scope="col">Observaciones</th>
               {user === 1 && <th scope="col">Acciones</th>}
             </tr>
@@ -159,13 +164,20 @@ const ListaAlumnos = ({ user }) => {
           <tbody>
             {alumnos.map((alumno) => (
               <tr key={alumno.id} className="contenido">
-                <td data-label="Nombre">{alumno.nombres}</td>
-                <td data-label="Apellido">{alumno.apellido}</td>
-                <td data-label="Dni">{alumno.dni}</td>
+                <td data-label="Nombre">{alumno.nombreAlumno}</td>
+                <td data-label="Apellido">{alumno.apellidoAlumno}</td>
+                <td data-label="Dni">{alumno.dniAlumno}</td>
+                <td data-label="Fecha de Nacimiento">{alumno.fechaNac}</td>
                 <td data-label="Domicilio">{alumno.domicilio}</td>
                 <td data-label="Grado/Año">{alumno.grado}</td>
-                <td data-label="Tutor">{alumno.tutor}</td>
-                <td data-label="Telefono">{alumno.telefono}</td>
+                <td data-label="Nombre del Padre">{alumno.nombrePadre}</td>
+                <td data-label="Dni del Padre">{alumno.dniPadre}</td>
+                <td data-label="Telefono del Padre">{alumno.telefonoPadre}</td>
+                <td data-label="Nombre de la Madre">{alumno.nombreMadre}</td>
+                <td data-label="Dni de la Madre">{alumno.dniMadre}</td>
+                <td data-label="Telefono de la Madre">
+                  {alumno.telefonoMadre}
+                </td>
                 <td data-label="Observaciones" className="observaciones">
                   {alumno.observaciones}
                 </td>
@@ -201,11 +213,11 @@ const ListaAlumnos = ({ user }) => {
             <h2>Modificar Alumno</h2>
             <form>
               <label>
-                Nombre:
+                Nombre de alumno:
                 <input
                   type="text"
-                  name="nombres"
-                  value={selectedAlumno.nombres}
+                  name="nombreAlumno"
+                  value={selectedAlumno.nombreAlumno}
                   onChange={handleInputChange}
                 />
               </label>
@@ -214,8 +226,8 @@ const ListaAlumnos = ({ user }) => {
                 Apellido:
                 <input
                   type="text"
-                  name="apellido"
-                  value={selectedAlumno.apellido}
+                  name="apellidoAlumno"
+                  value={selectedAlumno.apellidoAlumno}
                   onChange={handleInputChange}
                 />
               </label>
@@ -224,17 +236,29 @@ const ListaAlumnos = ({ user }) => {
                 DNI:
                 <input
                   type="number"
-                  name="dni"
-                  value={selectedAlumno.dni}
+                  name="dniAlumno"
+                  value={selectedAlumno.dniAlumno}
                   onChange={handleInputChange}
-                  min="0" 
+                  min="0"
                   onInput={(e) => {
                     if (e.target.value.length > 8) {
                       e.target.value = e.target.value.slice(0, 8);
                     }
                   }}
                 />
-                {errors.dni && <span style={{ color: "red" }}>{errors.dni}</span>}
+                {errors.dni && (
+                  <span style={{ color: "red" }}>{errors.dni}</span>
+                )}
+              </label>
+              <br />
+              <label>
+                Fecha de Nacimiento:
+                <input
+                  type="date"
+                  name="fechaNac"
+                  value={selectedAlumno.fechaNac || ""}
+                  onChange={handleInputChange}
+                />
               </label>
               <br />
               <label>
@@ -273,23 +297,83 @@ const ListaAlumnos = ({ user }) => {
               </label>
               <br />
               <label>
-                Tutor:
+                Nombre del Padre:
                 <input
                   type="text"
-                  name="tutor"
-                  value={selectedAlumno.tutor}
+                  name="nombrePadre"
+                  value={selectedAlumno.nombrePadre}
                   onChange={handleInputChange}
                 />
               </label>
               <br />
               <label>
-                Teléfono:
+                DNI del Padre:
+                <input
+                  type="number"
+                  name="dniPadre"
+                  value={selectedAlumno.dniPadre}
+                  onChange={handleInputChange}
+                  onInput={(e) => {
+                    if (e.target.value.length > 8) {
+                      e.target.value = e.target.value.slice(0, 8);
+                    }
+                  }}
+                />
+                {errors.dni && (
+                  <span style={{ color: "red" }}>{errors.dni}</span>
+                )}
+              </label>
+              <br />
+              <label>
+                Teléfono del padre:
                 <input
                   type="text"
-                  name="telefono"
-                  value={selectedAlumno.telefono}
+                  name="telefonoPadre"
+                  value={selectedAlumno.telefonoPadre}
                   onChange={handleInputChange}
-                  maxLength={15} 
+                  maxLength={15}
+                />
+                {errors.telefono && (
+                  <span style={{ color: "red" }}>{errors.telefono}</span>
+                )}
+              </label>
+              <br />
+              <label>
+                Nombre de la Madre:
+                <input
+                  type="text"
+                  name="nombreMadre"
+                  value={selectedAlumno.nombreMadre}
+                  onChange={handleInputChange}
+                />
+              </label>
+              <br />
+              <label>
+                DNI de la Madre:
+                <input
+                  type="number"
+                  name="dniMadre"
+                  value={selectedAlumno.dniMadre}
+                  onChange={handleInputChange}
+                  onInput={(e) => {
+                    if (e.target.value.length > 8) {
+                      e.target.value = e.target.value.slice(0, 8);
+                    }
+                  }}
+                />
+                {errors.dni && (
+                  <span style={{ color: "red" }}>{errors.dni}</span>
+                )}
+              </label>
+              <br />
+              <label>
+                Teléfono de la Madre:
+                <input
+                  type="text"
+                  name="telefonoMadre"
+                  value={selectedAlumno.telefonoMadre}
+                  onChange={handleInputChange}
+                  maxLength={15}
                 />
                 {errors.telefono && (
                   <span style={{ color: "red" }}>{errors.telefono}</span>
@@ -323,4 +407,3 @@ const ListaAlumnos = ({ user }) => {
 };
 
 export default ListaAlumnos;
-

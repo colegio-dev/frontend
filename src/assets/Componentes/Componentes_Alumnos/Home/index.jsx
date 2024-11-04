@@ -34,8 +34,9 @@ function Home({ user, setUser }) {
                     <ul className="d-flex" >
                         <li><Link className="btn btn-carga" to="/Carga"  >Carga de Alumnos</Link></li>
                         <li><Link className="btn btn-lista" to="/Lista"  >Lista de Alumnos</Link></li>
-                        <li><Link className='btn btn-carga' to="/CargaPagos" >Carga de Pagos</Link></li>
+                        {/* <li><Link className='btn btn-carga' to="/CargaPagos" >Carga de Pagos</Link></li>
                         <li><Link className='btn btn-lista' to="/ListaPagos" >Lista de Pagos</Link></li>
+                        <li><Link className='btn' to="/RegistroPago">Registro de Pago</Link></li> */}
                         
                     </ul>
                     <hr />
