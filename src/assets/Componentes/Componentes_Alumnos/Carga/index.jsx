@@ -65,16 +65,7 @@ const CargaAlumno = () => {
     setGeneralError("");
 
     try {
-      const response = await axios.get(`${URI}check-duplicate`, {
-        params: { dniAlumno, excludeId: existingAlumnoId },
-      });
-      const { isDuplicate } = response.data;
-
-      if (isDuplicate) {
-        setGeneralError("El DNI ingresado ya está registrado.");
-        setLoading(false);
-        return;
-      }
+      
 
       const data = {
         nombreAlumno,
