@@ -31,7 +31,7 @@ const CargaAlumno = () => {
   const [errorTelefonoMadre, setErrorTelefonoMadre] = useState("");
   const [generalError, setGeneralError] = useState("");
 
-  const [existingAlumnoId, setExistingAlumnoId] = useState(null);
+  //const [existingAlumnoId, setExistingAlumnoId] = useState(null);
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -53,7 +53,7 @@ const CargaAlumno = () => {
         setDniMadre(alumno.dniMadre);
         setTelefonoMadre(alumno.telefonoMadre);
         setObservaciones(alumno.observaciones);
-        setExistingAlumnoId(alumno.id);
+       // setExistingAlumnoId(alumno.id);
       };
       fetchAlumno();
     }
@@ -66,7 +66,7 @@ const CargaAlumno = () => {
 
     try {
       
-
+      
       const data = {
         nombreAlumno,
         apellidoAlumno,
@@ -83,11 +83,11 @@ const CargaAlumno = () => {
         observaciones,
       };
 
-      if (existingAlumnoId) {
-        await axios.put(`${URI}${existingAlumnoId}`, data);
-      } else {
+      //if (existingAlumnoId) {
+        //await axios.put(`${URI}${existingAlumnoId}`, data);
+      //} else {
         await axios.post(URI, data);
-      }
+      //}
 
       navigate("/Lista");
     } catch (error) {
