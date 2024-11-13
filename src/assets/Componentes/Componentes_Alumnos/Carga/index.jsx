@@ -1,7 +1,7 @@
 import "./index.css";
 import axios from "axios";
-import { useState } from "react";
-import { useNavigate} from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 /* const URI = "http://localhost:8000/students/"; */
 
@@ -31,9 +31,9 @@ const CargaAlumno = () => {
   const [errorTelefonoMadre, setErrorTelefonoMadre] = useState("");
   const [generalError, setGeneralError] = useState("");
 
-  
+  const [existingAlumnoId, setExistingAlumnoId] = useState(null);
   const navigate = useNavigate();
-  /* const { id } = useParams();
+  const { id } = useParams();
 
   useEffect(() => {
     if (id) {
@@ -53,11 +53,11 @@ const CargaAlumno = () => {
         setDniMadre(alumno.dniMadre);
         setTelefonoMadre(alumno.telefonoMadre);
         setObservaciones(alumno.observaciones);
-        
+        setExistingAlumnoId(alumno.id);
       };
       fetchAlumno();
     }
-  }, [id]); */
+  }, [id]);
 
   const store = async (e) => {
     e.preventDefault();
@@ -65,7 +65,18 @@ const CargaAlumno = () => {
     setGeneralError("");
 
     try {
-      await axios.post(URI, {
+      const response = await axios.get(`${URI}check-duplicate`, {
+        params: { dniAlumno, excludeId: existingAlumnoId },
+      });
+      const { isDuplicate } = response.data;
+
+      if (isDuplicate) {
+        setGeneralError("El DNI ingresado ya está registrado.");
+        setLoading(false);
+        return;
+      }
+
+      const data = {
         nombreAlumno,
         apellidoAlumno,
         dniAlumno,
@@ -79,10 +90,19 @@ const CargaAlumno = () => {
         dniMadre,
         telefonoMadre,
         observaciones,
-      });
+      };
+
+      if (existingAlumnoId) {
+        await axios.put(`${URI}${existingAlumnoId}`, data);
+      } else {
+        await axios.post(URI, data);
+      }
+
       navigate("/Lista");
-      } catch (error) {
-      setGeneralError("Ocurrió un error al cargar el alumno. Inténtalo nuevamente.");
+    } catch (error) {
+      setGeneralError(
+        "Ocurrió un error al cargar el alumno. Inténtalo nuevamente."
+      );
       console.error(error);
     } finally {
       setLoading(false);
@@ -93,31 +113,41 @@ const CargaAlumno = () => {
     const value = e.target.value;
     if (/^\d{0,8}$/.test(value)) {
       setDniAlumno(value);
-      setErrorDniAlumno(value.length >= 7 ? "" : "El DNI debe tener entre 7 y 8 dígitos");
+      setErrorDniAlumno(
+        value.length >= 7 ? "" : "El DNI debe tener entre 7 y 8 dígitos"
+      );
     }
   };
-  
+
   const handleDniChangePadre = (e) => {
     const value = e.target.value;
     if (/^\d{0,8}$/.test(value)) {
       setDniPadre(value);
-      setErrorDniPadre(value.length >= 7 ? "" : "El DNI debe tener entre 7 y 8 dígitos");
+      setErrorDniPadre(
+        value.length >= 7 ? "" : "El DNI debe tener entre 7 y 8 dígitos"
+      );
     }
   };
-  
+
   const handleDniChangeMadre = (e) => {
     const value = e.target.value;
     if (/^\d{0,8}$/.test(value)) {
       setDniMadre(value);
-      setErrorDniMadre(value.length >= 7 ? "" : "El DNI debe tener entre 7 y 8 dígitos");
+      setErrorDniMadre(
+        value.length >= 7 ? "" : "El DNI debe tener entre 7 y 8 dígitos"
+      );
     }
   };
-  
+
   const handleTelefonoChangePadre = (e) => {
     const value = e.target.value;
     if (/^\d{0,15}$/.test(value)) {
       setTelefonoPadre(value);
-      setErrorTelefonoPadre(value.length >= 10 && value.length <= 15 ? "" : "El número debe tener entre 10 y 15 dígitos.");
+      setErrorTelefonoPadre(
+        value.length >= 10 && value.length <= 15
+          ? ""
+          : "El número debe tener entre 10 y 15 dígitos."
+      );
     }
   };
 
@@ -125,7 +155,11 @@ const CargaAlumno = () => {
     const value = e.target.value;
     if (/^\d{0,15}$/.test(value)) {
       setTelefonoMadre(value);
-      setErrorTelefonoMadre(value.length >= 10 && value.length <= 15 ? "" : "El número debe tener entre 10 y 15 dígitos.");
+      setErrorTelefonoMadre(
+        value.length >= 10 && value.length <= 15
+          ? ""
+          : "El número debe tener entre 10 y 15 dígitos."
+      );
     }
   };
 
@@ -159,13 +193,15 @@ const CargaAlumno = () => {
             onChange={handleDniChangeAlumno}
             placeholder="Ingrese su DNI"
           />
-          {errorDniAlumno && <span style={{ color: "red" }}>{errorDniAlumno}</span>}
-          <input 
-          type="date" 
-          name="fechaNac" 
-          placeholder="Fecha de Nacimiento"
-          value={fechaNac}
-          onChange={(e)=>setFechaNac(e.target.value)}
+          {errorDniAlumno && (
+            <span style={{ color: "red" }}>{errorDniAlumno}</span>
+          )}
+          <input
+            type="date"
+            name="fechaNac"
+            placeholder="Fecha de Nacimiento"
+            value={fechaNac}
+            onChange={(e) => setFechaNac(e.target.value)}
           />
           <input
             type="text"
@@ -208,16 +244,20 @@ const CargaAlumno = () => {
             onChange={handleDniChangePadre}
             placeholder="Ingrese su DNI"
           />
-          {errorDniPadre && <span style={{ color: "red" }}>{errorDniPadre}</span>}
+          {errorDniPadre && (
+            <span style={{ color: "red" }}>{errorDniPadre}</span>
+          )}
           <input
-        type="text"
-        id="telefono"
-        value={telefonoPadre}
-        onChange={handleTelefonoChangePadre}
-        placeholder="Ingrese su número de teléfono"
-      />
-      {errorTelefonoPadre && <span style={{ color: "red" }}>{errorTelefonoPadre}</span>}
-      <input
+            type="text"
+            id="telefono"
+            value={telefonoPadre}
+            onChange={handleTelefonoChangePadre}
+            placeholder="Ingrese su número de teléfono"
+          />
+          {errorTelefonoPadre && (
+            <span style={{ color: "red" }}>{errorTelefonoPadre}</span>
+          )}
+          <input
             type="text"
             name="nombreMadre"
             placeholder="Nombre completo de la madre"
@@ -232,15 +272,19 @@ const CargaAlumno = () => {
             onChange={handleDniChangeMadre}
             placeholder="Ingrese su DNI"
           />
-          {errorDniMadre && <span style={{ color: "red" }}>{errorDniMadre}</span>}
+          {errorDniMadre && (
+            <span style={{ color: "red" }}>{errorDniMadre}</span>
+          )}
           <input
-        type="text"
-        id="telefono"
-        value={telefonoMadre}
-        onChange={handleTelefonoChangeMadre}
-        placeholder="Ingrese su número de teléfono"
-      />
-      {errorTelefonoMadre && <span style={{ color: "red" }}>{errorTelefonoMadre}</span>}
+            type="text"
+            id="telefono"
+            value={telefonoMadre}
+            onChange={handleTelefonoChangeMadre}
+            placeholder="Ingrese su número de teléfono"
+          />
+          {errorTelefonoMadre && (
+            <span style={{ color: "red" }}>{errorTelefonoMadre}</span>
+          )}
           <input
             type="text"
             name="observaciones"
