@@ -31,7 +31,7 @@ const CargaAlumno = () => {
   const [errorTelefonoMadre, setErrorTelefonoMadre] = useState("");
   const [generalError, setGeneralError] = useState("");
 
-  //const [existingAlumnoId, setExistingAlumnoId] = useState(null);
+  const [existingAlumnoId, setExistingAlumnoId] = useState(null);
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -53,12 +53,15 @@ const CargaAlumno = () => {
         setDniMadre(alumno.dniMadre);
         setTelefonoMadre(alumno.telefonoMadre);
         setObservaciones(alumno.observaciones);
-       // setExistingAlumnoId(alumno.id);
+       setExistingAlumnoId(alumno.id);
       };
       fetchAlumno();
     }
   }, [id]);
-
+  const headers = {
+    "Content-Type": "application/json",
+  };
+  
   const store = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -83,19 +86,30 @@ const CargaAlumno = () => {
         observaciones,
       };
 
-      //if (existingAlumnoId) {
-        //await axios.put(`${URI}${existingAlumnoId}`, data);
-      //} else {
-        await axios.post(URI, data);
-      //}
+      if (existingAlumnoId) {
+        await axios.put(`${URI}${existingAlumnoId}`, data, {headers});
+      } else {
+        await axios.post(URI, data, {headers});
+      }
 
       navigate("/Lista");
     } catch (error) {
-      setGeneralError(
-        "Ocurrió un error al cargar el alumno. Inténtalo nuevamente."
-      );
-      console.error(error);
-    } finally {
+      if (error.response) {
+         // El servidor respondió con un código de estado fuera del rango 2xx
+         console.error("Error del servidor:", error.response.data);
+         console.error("Código de estado:", error.response.status);
+         setGeneralError("Error del servidor. Inténtalo nuevamente.");
+      } else if (error.request) {
+         // La solicitud fue hecha pero no hubo respuesta
+         console.error("No se recibió respuesta del servidor:", error.request);
+         setGeneralError("No se recibió respuesta. Verifica la conexión.");
+      } else {
+         // Algo pasó al configurar la solicitud que disparó el error
+         console.error("Error al configurar la solicitud:", error.message);
+         setGeneralError("Error en el frontend. Inténtalo nuevamente.");
+      }
+   }
+    finally {
       setLoading(false);
     }
   };
