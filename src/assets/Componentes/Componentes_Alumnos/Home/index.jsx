@@ -8,6 +8,7 @@ import { /* onAuthStateChanged, */ signOut } from 'firebase/auth';
 
 /* const URI = 'http://localhost:8000/users'; */
 
+// eslint-disable-next-line react/prop-types
 function Home({setUser}) {
     
     
