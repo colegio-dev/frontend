@@ -1,7 +1,6 @@
 
 import { initializeApp } from 'firebase/app';
-import {  getStorage } from 'firebase/storage';
-
+import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import 'firebase/firestore';
 
 
@@ -19,7 +18,7 @@ const app = initializeApp(firebaseConfig);
 
 
 
-export const storage = getStorage(app)
-
+export const Auth = getAuth(app)
+export const googleProvider = new GoogleAuthProvider(); // Proveedor de autenticación de Google
 
 

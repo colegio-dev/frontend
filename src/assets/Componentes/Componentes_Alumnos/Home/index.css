@@ -74,7 +74,15 @@ ul {
   color: #9e0101;
   box-shadow: 0 0 15px 5px #9e0101;
 }
+.modal-dialog{
 
+  position: relative;
+    width: 80%;
+    height: 80%;
+    max-width: 400px;
+    max-height: 400px;
+
+}  
 @media screen and (max-width: 420px) {
   .nav {
     display: ruby;

@@ -8,6 +8,7 @@ Modal.setAppElement("#root"); // Ajusta el selector según sea necesario
 // desarrollo local
 /* const URI = "http://localhost:8000/students"; */
 
+
 const URI = "https://facturador-backend.onrender.com/students";
 
 // eslint-disable-next-line react/prop-types
@@ -21,7 +22,6 @@ const ListaAlumnos = ({ user }) => {
     getAlumnos();
   }, []);
 
- 
 
   const getAlumnos = async () => {
     try {
