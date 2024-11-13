@@ -5,8 +5,6 @@ import { Auth } from '../../../../firebase.js'; // Importa el objeto auth desde 
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 
 
-import axios from 'axios';
-
 
 /* const URI = 'http://localhost:8000/users'; */
 
@@ -14,7 +12,7 @@ function Home({ setUser }) {
     const [users, setUsers] = useState([]);
     const [currentUser, setCurrentUser] = useState(null); // Estado para almacenar el usuario actual
     
-    const [error, setError] = useState(''); // Estado para manejar errores
+    
     
     const navigate = useNavigate();
     
@@ -31,24 +29,6 @@ function Home({ setUser }) {
 
         return () => unsubscribe(); // Limpia el listener al desmontar el componente
     }, [navigate, setUser]);
-    /* useEffect(() => {
-        const fetchUsers = async () => {
-          try {
-            const response = await axios.get(URI);
-            if (Array.isArray(response.data)) {
-              setUsers(response.data);
-            } else {
-              console.error("La respuesta no es un array:", response.data);
-              setUsers([]);
-            }
-          } catch (error) {
-            console.error('Error fetching users:', error);
-            setError('Error al cargar usuarios');
-          }
-        };
-    
-        fetchUsers();
-      }, []); */
 
     const handleLogOut = async () => {
         try {
@@ -85,10 +65,6 @@ function Home({ setUser }) {
                 <ul className="d-flex">
                     <li><Link className="btn btn-carga" to="/Carga">Carga de Alumnos</Link></li>
                     <li><Link className="btn btn-lista" to="/Lista">Lista de Alumnos</Link></li>
-                    {/* <li><Link className="btn btn-carga" to="/CargaPagos">Carga de Pagos</Link></li>
-                    <li><Link className="btn btn-lista" to="/ListaPagos">Lista de Pagos</Link></li>
-                    <li><Link className='btn' to="/CargaUsuario">Crear Usuario</Link></li>
-                    <li><Link className='btn' to="/ListaUsuario">Usuarios Registrados</Link></li> */}
                     
                 </ul>
                 
@@ -103,5 +79,4 @@ function Home({ setUser }) {
 }
 
 export default Home;
-
 

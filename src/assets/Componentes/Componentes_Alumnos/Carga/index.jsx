@@ -1,7 +1,7 @@
 import "./index.css";
 import axios from "axios";
-import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate} from "react-router-dom";
 
 /* const URI = "http://localhost:8000/students/"; */
 
@@ -31,9 +31,9 @@ const CargaAlumno = () => {
   const [errorTelefonoMadre, setErrorTelefonoMadre] = useState("");
   const [generalError, setGeneralError] = useState("");
 
-  //const [existingAlumnoId, setExistingAlumnoId] = useState(null);
+  
   const navigate = useNavigate();
-  const { id } = useParams();
+  /* const { id } = useParams();
 
   useEffect(() => {
     if (id) {
@@ -53,11 +53,11 @@ const CargaAlumno = () => {
         setDniMadre(alumno.dniMadre);
         setTelefonoMadre(alumno.telefonoMadre);
         setObservaciones(alumno.observaciones);
-        //setExistingAlumnoId(alumno.id);
+        
       };
       fetchAlumno();
     }
-  }, [id]);
+  }, [id]); */
 
   const store = async (e) => {
     e.preventDefault();
@@ -65,8 +65,7 @@ const CargaAlumno = () => {
     setGeneralError("");
 
     try {
-
-      const data = {
+      await axios.post(URI, {
         nombreAlumno,
         apellidoAlumno,
         dniAlumno,
@@ -80,16 +79,9 @@ const CargaAlumno = () => {
         dniMadre,
         telefonoMadre,
         observaciones,
-      };
-
-      if (id) {
-        await axios.put(`${URI}${id}`, data);
-      } else {
-        await axios.post(URI, data);
-      }
-
+      });
       navigate("/Lista");
-    } catch (error) {
+      } catch (error) {
       setGeneralError("Ocurrió un error al cargar el alumno. Inténtalo nuevamente.");
       console.error(error);
     } finally {
