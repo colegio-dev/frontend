@@ -2,7 +2,9 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import "./index.css";
 
-const URI = "http://localhost:8000/students/";
+//const URI = "http://localhost:8000/students/";
+
+const URI = "https://backend-9rzw.onrender.com/students"
 
 // eslint-disable-next-line react/prop-types
 const ListaPagos = () => {

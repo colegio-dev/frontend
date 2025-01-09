@@ -153,7 +153,9 @@ function Login({ setUser }) {
       const user = userCredential.user;
   
       // Obtener el tipo de usuario desde el backend
-      const response = await axios.get(`http://localhost:8000/users?uid=${user.uid}`);
+      //const response = await axios.get(`http://localhost:8000/users?uid=${user.uid}`);
+
+      const response = await axios.get(`https://backend-9rzw.onrender.com/users?uid=${user.uid}`)
       
       // Si la respuesta es un arreglo, toma el primer elemento
       const userType = Array.isArray(response.data)

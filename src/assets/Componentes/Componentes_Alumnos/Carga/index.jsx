@@ -3,9 +3,9 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-const URI = "http://localhost:8000/students/";
+//const URI = "http://localhost:8000/students/";
 
-/* const URI = "https://facturador-backend.onrender.com/students"; */
+const URI = "https://backend-9rzw.onrender.com/students";
 
 const CargaAlumno = () => {
   const [nombreAlumno, setNombreAlumno] = useState("");

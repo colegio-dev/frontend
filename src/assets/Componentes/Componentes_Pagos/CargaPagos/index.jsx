@@ -5,7 +5,9 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./index.css";
 
-const URI_ALUMNOS = "http://localhost:8000/students";
+//const URI_ALUMNOS = "http://localhost:8000/students";
+
+const URI_ALUMNOS = "https://backend-9rzw.onrender.com/students"
 
 const CargaPagos = () => {
   const [nombreAlumno, setNombreAlumno] = useState("");

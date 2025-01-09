@@ -431,11 +431,11 @@ import "./index.css";
 Modal.setAppElement("#root");
 
 //desarrollo produccion
-// const URI = "https://facturador-backend.onrender.com/students";
+ const URI = "https://backend-9rzw.onrender.com/students";
 
 
 // desarrollo local
-const URI = "http://localhost:8000/students";
+//const URI = "http://localhost:8000/students";
 
 const ListaAlumnos = ({ user }) => {
   const [alumnos, setAlumnos] = useState([]);

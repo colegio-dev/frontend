@@ -4,7 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { Auth } from "../../../../firebase.js"; // Asegúrate de ajustar la ruta según tu estructura de archivos
 
-const URI = 'http://localhost:8000/users';
+//const URI = 'http://localhost:8000/users';
+
+const URI = "https://backend-9rzw.onrender.com/users"
 
 const CargaUsuario = () => {
   

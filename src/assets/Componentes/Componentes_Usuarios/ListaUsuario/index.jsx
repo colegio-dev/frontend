@@ -12,7 +12,9 @@ import {
 } from "firebase/auth";
 import "./index.css";
 
-const URI = "http://localhost:8000/users";
+//const URI = "http://localhost:8000/users";
+
+const URI = "https://backend-9rzw.onrender.com/users"
 
 const ListaUsuario = () => {
   const [users, setUsers] = useState([]);
