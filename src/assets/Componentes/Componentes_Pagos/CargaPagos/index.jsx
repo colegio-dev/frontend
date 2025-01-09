@@ -1,179 +1,4 @@
-/* import { useState, useEffect } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import "./index.css";
 
-// Desarrollo local
-const URI_ALUMNOS = "http://localhost:8000/students";
-const URI_PAGOS = "http://localhost:8000/invoices";
-
-
-//const URI_ALUMNOS = "https://facturador-backend.onrender.com/students";
-//const URI_PAGOS = "https://facturador-backend.onrender.com/invoices"; 
-
-const CargaPagos = () => {
-  const [nombres, setNombres] = useState("");
-  const [apellido, setApellido] = useState("");
-  const [dni, setDni] = useState(""); // Aquí se guarda el DNI ingresado
-  const [tipoPago, setTipoPago] = useState("");
-  const [importe, setImporte] = useState("");
-  const [numCuota, setNumCuota] = useState("");
-  const [comprobante, setComprobante] = useState("");
-  const [alumnos, setAlumnos] = useState([]); // Lista de alumnos
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    getAlumnos(); // Obtener la lista de alumnos al cargar el componente
-  }, []);
-
-  // Obtener alumnos desde el backend
-  const getAlumnos = async () => {
-    try {
-      const res = await axios.get(URI_ALUMNOS);
-      setAlumnos(res.data); // Guardar la lista de alumnos en el estado
-    } catch (error) {
-      console.error("Error al obtener los alumnos:", error);
-    }
-  };
-
-  // Función para buscar un alumno por DNI
-  const handleDniChange = (dniIngresado) => {
-    setDni(dniIngresado);
-
-    // Buscar el alumno en la lista basado en el DNI ingresado
-    const alumnoSeleccionado = alumnos.find((alumno) => String(alumno.dni) === dniIngresado);
-
-    // Autocompletar los campos de nombres y apellidos si el alumno es encontrado
-    if (alumnoSeleccionado) {
-      setNombres(alumnoSeleccionado.nombres);
-      setApellido(alumnoSeleccionado.apellido);
-    } else {
-      setNombres("");
-      setApellido("");
-    }
-  };
-
-  // Validar importe
-  const validateImporte = (value) => {
-    const numberValue = parseFloat(value);
-    return !isNaN(numberValue) && numberValue > 0; // Verifica que sea un número positivo
-  };
-
-  // Guardar el pago
-  const store = async (e) => {
-    e.preventDefault();
-
-    // Validar el importe antes de enviar el formulario
-    if (!validateImporte(importe)) {
-      alert("El importe debe ser un número positivo.");
-      return;
-    }
-
-    try {
-      await axios.post(URI_PAGOS, {
-        nombres: nombres,
-        apellido: apellido,
-        dni: dni, // Usar el DNI ingresado
-        tipoPago: tipoPago,
-        importe: importe,
-        numCuota: numCuota,
-        comprobante: comprobante
-      });
-
-      navigate("/ListaPagos");
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  return (
-    <>
-      <div>
-        <form onSubmit={store}>
-          <h4 className="form-titulo">Carga de Pago de Cuotas</h4>
-
-          
-          <select
-            name="dni"
-            value={dni}
-            onChange={(e) => handleDniChange(e.target.value)} // Manejar la selección del alumno
-            required
-          >
-            <option value="">Seleccione un alumno por DNI</option>
-            {alumnos.map((alumno) => (
-              <option key={alumno.dni} value={alumno.dni}>
-                {alumno.nombres} {alumno.apellido} - DNI: {alumno.dni}
-              </option>
-            ))}
-          </select>
-
-          
-          <input
-            type="text"
-            name="nombres"
-            placeholder="Nombres"
-            value={nombres}
-            readOnly
-            disabled
-          />
-          <input
-            type="text"
-            name="apellido"
-            placeholder="Apellido"
-            value={apellido}
-            readOnly
-            disabled
-          />
-
-          
-          <select
-            name="tipoPago"
-            value={tipoPago}
-            onChange={(e) => setTipoPago(e.target.value)}
-            required
-          >
-            <option value="">Seleccione una opción</option>
-            <option value="Transferencia">Transferencia</option>
-            <option value="Efectivo">Efectivo</option>
-            <option value="Tarjeta de Crédito/Débito">Tarjeta de Crédito/Débito</option>
-          </select>
-
-          
-          <input
-            type="number"
-            name="importe"
-            placeholder="Ingrese el Importe"
-            value={importe}
-            onChange={(e) => setImporte(e.target.value)}
-            required
-          />
-
-          <select
-            name="numCuota"
-            value={numCuota}
-            onChange={(e) => setNumCuota(e.target.value)}
-          >
-            <option value="">Seleccione la Cuota</option>
-            {[...Array(12).keys()].map((cuota) => (
-              <option key={cuota + 1} value={cuota + 1}>
-                {cuota + 1}
-              </option>
-            ))}
-          </select>
-          <input type="text "
-            value={comprobante}
-            onChange={(e)=> setComprobante(e.target.value)}
-          />
-
-          <input type="submit" className="btn" value="Guardar" />
-        </form>
-      </div>
-    </>
-  );
-};
-export default CargaPagos;
-
- */
 
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -181,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import "./index.css";
 
 const URI_ALUMNOS = "http://localhost:8000/students";
-const URI_PAGOS = "http://localhost:8000/invoices";
 
 const CargaPagos = () => {
   const [nombreAlumno, setNombreAlumno] = useState("");
@@ -189,9 +13,15 @@ const CargaPagos = () => {
   const [dniAlumno, setDniAlumno] = useState("");
   const [tipoPago, setTipoPago] = useState("");
   const [importe, setImporte] = useState("");
-  const [numCuota, setNumCuota] = useState("");
   const [comprobante, setComprobante] = useState("");
   const [alumnos, setAlumnos] = useState([]);
+  const [cuotasRestantes, setCuotasRestantes] = useState("");
+  const [montoPorCuota, setMontoPorCuota] = useState("");
+  const [cuotasPagadas, setCuotasPagadas] = useState("");
+  // eslint-disable-next-line no-unused-vars
+  const [totalCuotas, setTotalCuotas] = useState("");
+  const [idAlumno, setIdAlumno] = useState("");
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -207,49 +37,81 @@ const CargaPagos = () => {
     }
   };
 
-  const handleDniChange = (dniIngresado) => {
+  const handleDniChange = async (dniIngresado) => {
     setDniAlumno(dniIngresado);
-    const alumnoSeleccionado = alumnos.find((alumno) => String(alumno.dniAlumno) === dniIngresado);
+    const alumnoSeleccionado = alumnos.find(
+      (alumno) => String(alumno.dniAlumno) === dniIngresado
+    );
 
     if (alumnoSeleccionado) {
       setNombreAlumno(alumnoSeleccionado.nombreAlumno);
       setApellidoAlumno(alumnoSeleccionado.apellidoAlumno);
+      setCuotasRestantes(alumnoSeleccionado.totalCuotas - alumnoSeleccionado.cuotasPagadas);
+      setMontoPorCuota(alumnoSeleccionado.montoPorCuota);
+      setCuotasPagadas(alumnoSeleccionado.cuotasPagadas);
+      setIdAlumno(alumnoSeleccionado.id);
     } else {
       setNombreAlumno("");
       setApellidoAlumno("");
+      setCuotasRestantes(0);
+      setMontoPorCuota(0);
+      setCuotasPagadas(0);
+      setTotalCuotas(0);
+      setIdAlumno("");
     }
   };
 
-  const validateImporte = (value) => {
-    const numberValue = parseFloat(value);
-    return !isNaN(numberValue) && numberValue > 0;
-  };
+  const handleImporteChange = (e) => {
+    let valorIngresado = parseFloat(e.target.value);
 
-  const store = async (e) => {
-    e.preventDefault();
-
-    if (!validateImporte(importe)) {
-      alert("El importe debe ser un número positivo.");
+    // Asegurarse de que el valor sea un número positivo
+    if (isNaN(valorIngresado) || valorIngresado <= 0) {
+      setImporte("");
       return;
     }
 
-    try {
-      await axios.post(URI_PAGOS, {
-        nombreAlumno,
-        apellidoAlumno,
-        dniAlumno,
-        tipoPago,
-        importe,
-        numCuota,
-        comprobante,
-      });
-
-      navigate("/ListaPagos");
-    } catch (error) {
-      console.error(error);
+    // Restringir el importe al monto pendiente
+    if (valorIngresado > montoPorCuota) {
+      alert(`El importe no puede exceder el monto pendiente (${montoPorCuota}).`);
+      setImporte(montoPorCuota);
+    } else {
+      setImporte(valorIngresado);
     }
   };
 
+  
+  const store = async (e) => {
+    e.preventDefault();
+  
+    if (!dniAlumno || !nombreAlumno || !apellidoAlumno || !idAlumno) {
+      alert("Debe seleccionar un alumno válido.");
+      return;
+    }
+  
+    try {
+      const response = await axios.put(`${URI_ALUMNOS}/${idAlumno}`, { 
+        importe, 
+        comprobante, 
+        tipoPago
+      });
+  
+      if (response.data && response.data.updatedStudent) {
+        const updatedStudent = response.data.updatedStudent;
+        setCuotasRestantes(updatedStudent.cuotasRestantes);
+        setCuotasPagadas(updatedStudent.cuotasPagadas);
+        setMontoPorCuota(updatedStudent.montoPorCuota);
+        setTotalCuotas(updatedStudent.totalCuotas);
+        alert("Pago registrado correctamente.");
+        navigate("/ListaPagos");
+      } else {
+        throw new Error("Respuesta inesperada del servidor.");
+      }
+    } catch (error) {
+      console.error("Error al actualizar el pago:", error.response || error);
+      alert("Hubo un error al registrar el pago. Verifique la conexión y los datos.");
+    }
+  };
+  
   return (
     <div>
       <form onSubmit={store}>
@@ -267,31 +129,21 @@ const CargaPagos = () => {
             </option>
           ))}
         </select>
+          
+        <input type="text" name="nombreAlumno" value={nombreAlumno} placeholder="Nombre del Alumno" readOnly disabled />
+        <input type="text" name="apellidoAlumno" value={apellidoAlumno} placeholder="Apellido del Alumno" readOnly disabled />
+        <input type="number" name="cuotasPagadas" value={cuotasPagadas} placeholder="Cantidad de cuotas pagadas" readOnly disabled />
+        <input type="number" name="cuotasRestantes" value={cuotasRestantes} placeholder="Cantidad de cuotas de restantes" readOnly disabled />
+        <input type="number" name="montoPendiente" value={montoPorCuota} placeholder="Monto pendiente de abonar" readOnly disabled />
 
-        <input
-          type="text"
-          name="nombreAlumno"
-          placeholder="Nombres"
-          value={nombreAlumno}
-          readOnly
-          disabled
-        />
-        <input
-          type="text"
-          name="apellidoAlumno"
-          placeholder="Apellido"
-          value={apellidoAlumno}
-          readOnly
-          disabled
-        />
-
+        <p>Forma de Pago</p>
         <select
           name="tipoPago"
           value={tipoPago}
           onChange={(e) => setTipoPago(e.target.value)}
           required
         >
-          <option value="">Seleccione una opción</option>
+          <option value="">Seleccione una opción de pago</option>
           <option value="Transferencia">Transferencia</option>
           <option value="Efectivo">Efectivo</option>
           <option value="Tarjeta de Crédito/Débito">Tarjeta de Crédito/Débito</option>
@@ -302,30 +154,16 @@ const CargaPagos = () => {
           name="importe"
           placeholder="Ingrese el Importe"
           value={importe}
-          onChange={(e) => setImporte(e.target.value)}
+          onChange={handleImporteChange}
           required
         />
 
-        <select
-          name="numCuota"
-          value={numCuota}
-          onChange={(e) => setNumCuota(e.target.value)}
-        >
-          <option value="">Seleccione la Cuota</option>
-          {[...Array(12).keys()].map((cuota) => (
-            <option key={cuota + 1} value={cuota + 1}>
-              {cuota + 1}
-            </option>
-          ))}
-        </select>
-
         <input
           type="text"
-          placeholder="Comprobante"
+          placeholder="Numero de comprobante"
           value={comprobante}
           onChange={(e) => setComprobante(e.target.value)}
         />
-
         <input type="submit" className="btn" value="Guardar" />
       </form>
     </div>
@@ -333,3 +171,5 @@ const CargaPagos = () => {
 };
 
 export default CargaPagos;
+
+

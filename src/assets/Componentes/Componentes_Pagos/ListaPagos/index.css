@@ -75,6 +75,20 @@
 
    /* index.css */
 
+   .dni{
+     text-align: center;
+   }
+.cuotasPagadas{
+  color: green;
+  text-align: center;
+}
+.importe, .ultimoImporte, .cuotasRestantes{
+  text-align: center;
+}
+.importe{
+  color: red;
+}
+
 .container-cards {
   display: flex;
   flex-wrap: wrap;
@@ -82,14 +96,14 @@
   justify-content: space-between;
   align-items: flex-start;
   margin: 0 auto;
-  padding: 20px;
+  padding: 10px;
   max-width: 1200px;
 }
 
 .cards {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px; /* Espacio entre tarjetas */
+  gap: 15px; /* Espacio entre tarjetas */
   justify-content: center; /* Centra las tarjetas si hay espacio sobrante */
   width: 100%;
 }
@@ -124,7 +138,7 @@
   margin-bottom: 10px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  /* align-items: center; */
 }
 
 .headerCard img {

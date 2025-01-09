@@ -1,4 +1,4 @@
-
+/* /* 
 // eslint-disable react/prop-types 
 import axios from 'axios';
 import { useState } from 'react';
@@ -31,7 +31,7 @@ function Login({ setUser }) {
         setIsLoading(false);
         return;
       }
-      const response = await axios.post( /* 'http://localhost:8000/logins/' */   'https://facturador-backend.onrender.com/logins' , {
+      const response = await axios.post(  'http://localhost:8000/logins/'    'https://facturador-backend.onrender.com/logins' , {
         username,
         password
       });
@@ -116,48 +116,68 @@ function Login({ setUser }) {
   )
 }
 
-export default Login; 
+export default Login; */ 
 
 
-/* 
+
+
 import { useState } from 'react';
 import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 import { Auth } from "../../firebase.js"; 
 import axios from 'axios';
 import './index.css';
+import { useNavigate } from 'react-router-dom';
 
-
+// eslint-disable-next-line react/prop-types
 function Login({ setUser }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState(''); // Estado para el mensaje de restablecimiento
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-
+  
     try {
       if (email === '' || password === '') {
         setError('Por favor, complete ambos campos');
         setIsLoading(false);
         return;
       }
-      
+  
       // Autenticación con Firebase
       const userCredential = await signInWithEmailAndPassword(Auth, email, password);
       const user = userCredential.user;
+  
+      // Obtener el tipo de usuario desde el backend
+      const response = await axios.get(`http://localhost:8000/users?uid=${user.uid}`);
       
-      setUser(user); // Guardar usuario autenticado
+      // Si la respuesta es un arreglo, toma el primer elemento
+      const userType = Array.isArray(response.data)
+      ?  response.data.find(u => u.uid === user.uid)
+      : response.data.tipoUsuario
+  
+      if (!userType) {
+        throw new Error('Usuario no encontrado o sin tipoUsuario');
+      }
+      
+      
+      // Pasar usuario y tipo de usuario al componente principal
+      setUser( userType.tipoUsuario );
+      navigate('/')
       setIsLoading(false);
       setError('');
-      console.log("User signed in:", user);
+      
     } catch (error) {
-      setError('Correo o contraseña incorrecta');
+      setError('Correo o contraseña incorrecta o datos incompletos');
       setIsLoading(false);
+      console.error('Error:', error);
     }
   };
+  
 
   const handlePasswordReset = async () => {
     if (email === '') {
@@ -237,4 +257,6 @@ function Login({ setUser }) {
 
 export default Login;
 
- */
+
+
+

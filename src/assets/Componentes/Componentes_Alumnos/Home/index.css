@@ -1,17 +1,12 @@
 /* index.css */
-.nav {
-  display: flex;
-  justify-content: end;
-  padding: 1rem;
+.home{
+  position: relative;
 }
-img {
-  display: flex;
-  position: absolute;
-  left: 2%;
-  top: 2%;
-  width: 8%;
-  border-radius: 50%;
-  filter: sepia(100%) saturate(500%) hue-rotate(180deg) brightness(75%);
+
+.nav {
+  position: relative;
+  width: 100%;
+  
 }
 .titulo,
 h2 {
@@ -41,7 +36,6 @@ ul {
   padding: 0;
   font-family: "Raleway", sans-serif;
 }
-
 .btn {
   border: none;
   background-color: transparent;
@@ -53,6 +47,21 @@ ul {
   position: relative;
   overflow: hidden;
   cursor: pointer;
+}
+.btn-password {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-weight: 100;
+  border-radius: 20px;
+  color: darkgray;
+  background-color: gray;
+
+}
+.btn-logout{
+  position: absolute;
+  top: 10px;
+  right: 10px;
 }
 
 .btn::before {
@@ -74,21 +83,198 @@ ul {
   color: #9e0101;
   box-shadow: 0 0 15px 5px #9e0101;
 }
-.modal-dialog{
 
+/* animacion boton cambio de contraseña */
+.btn-password {
   position: relative;
-    width: 80%;
-    height: 80%;
-    max-width: 400px;
-    max-height: 400px;
+}
 
-}  
+.fa-user-gear {
+  transition: opacity 0.3s ease;
+}
+
+.hover-text-password {
+  display: none;
+  transition: opacity 0.3s ease;
+}
+
+.btn-password.hover .fa-user-gear {
+  opacity: 0; /* Oculta el ícono */
+}
+
+.btn-password.hover .hover-text-password {
+  display: inline-block;
+  opacity: 1; /* Muestra el texto */
+}
+
+
+/* animacion boton de carga de alumnos */
+.btn-carga {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.fa-user-plus {
+  transition: opacity 0.3s ease;
+}
+
+.hover-text-carga {
+  display: none;
+  transition: opacity 0.3s ease;
+}
+
+.btn-carga.hover .fa-user-plus {
+  opacity: 0; /* Oculta el ícono */
+}
+
+.btn-carga.hover .hover-text-carga {
+  display: inline-block;
+  opacity: 1; /* Muestra el texto */
+}
+ 
+/* animacion boton de lista de alumnos */
+.btn-lista {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.fa-users {
+  transition: opacity 0.3s ease;
+}
+
+.hover-text-lista {
+  display: none;
+  transition: opacity 0.3s ease;
+}
+
+.btn-lista.hover .fa-users {
+  opacity: 0; /* Oculta el ícono */
+}
+
+.btn-lista.hover .hover-text-lista {
+  display: inline-block;
+  opacity: 1; /* Muestra el texto */
+}
+
+/* animacion boton de carga de usuario */
+.btn-carga-user {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.fa-user-tie {
+  transition: opacity 0.3s ease;
+}
+
+.hover-text-carga-user {
+  display: none;
+  transition: opacity 0.3s ease;
+}
+
+.btn-carga-user.hover .fa-user-tie {
+  opacity: 0; /* Oculta el ícono */
+}
+
+.btn-carga-user.hover .hover-text-carga-user {
+  display: inline-block;
+  opacity: 1; /* Muestra el texto */
+}
+
+
+/* animacion boton de lista de usuarios */
+.btn-carga-userlist {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.fa-users-viewfinder {
+  transition: opacity 0.3s ease;
+  
+}
+
+.hover-text-userlist {
+  display: none;
+  transition: opacity 0.3s ease;
+}
+
+.btn-carga-userlist.hover .fa-users-viewfinder {
+  opacity: 0; /* Oculta el ícono */
+}
+
+.btn-carga-userlist.hover .hover-text-userlist {
+  display: inline-block;
+  opacity: 1; /* Muestra el texto */
+}
+
+
+/* animacion boton de carga de usuario */
+.btn-newinvoice {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.fa-file-invoice-dollar {
+  transition: opacity 0.3s ease;
+}
+
+.hover-text-newinvoice {
+  display: none;
+  transition: opacity 0.3s ease;
+}
+
+.btn-newinvoice.hover .fa-file-invoice-dollar {
+  opacity: 0; /* Oculta el ícono */
+}
+
+.btn-newinvoice.hover .hover-text-newinvoice {
+  display: inline-block;
+  opacity: 1; /* Muestra el texto */
+}
+
+/* animacion boton de lista de pagos */
+.btn-invoicelist {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.fa-receipt {
+  transition: opacity 0.3s ease;
+}
+
+.hover-text-invoicelist {
+  display: none;
+  transition: opacity 0.3s ease;
+}
+
+.btn-invoicelist.hover .fa-receipt {
+  opacity: 0; /* Oculta el ícono */
+}
+
+.btn-invoicelist.hover .hover-text-invoicelist {
+  display: inline-block;
+  opacity: 1; /* Muestra el texto */
+}
+
+
+.modal-dialog {
+  position: relative;
+  width: 80%;
+  height: 80%;
+  max-width: 400px;
+  max-height: 400px;
+}
 @media screen and (max-width: 420px) {
   .nav {
     display: ruby;
     padding: 1rem;
   }
-  img{
+  img {
     width: 15%;
   }
   .descripcion {

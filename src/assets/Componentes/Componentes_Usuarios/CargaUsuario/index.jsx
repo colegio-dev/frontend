@@ -80,8 +80,8 @@ const CargaUsuario = () => {
         />
         <select name="user" onChange={(e)=>setTipoUsuario(e.target.value)}>
           <option value="">Seleccione el tipo de usuario</option>
-          <option value="1">Administrador</option>
-          <option value="2">Usuario Regular</option>
+          <option value="Administrador">Administrador</option>
+          <option value="Usuario Regular">Usuario Regular</option>
         </select>
         <input type="submit" value="Cargar" className="btn btn-enviar" />
         {generalError && <p style={{ color: "red" }}>{generalError}</p>}

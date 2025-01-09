@@ -2,13 +2,10 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import "./index.css";
 
-// Desarrollo local
-const URI = "http://localhost:8000/invoices/";
-
-/* const URI = "https://facturador-backend.onrender.com/invoices/"; */
+const URI = "http://localhost:8000/students/";
 
 // eslint-disable-next-line react/prop-types
-const ListaPagos = ({ user }) => {
+const ListaPagos = () => {
   const [pagos, setPagos] = useState([]);
   const [filter, setFilter] = useState("");
 
@@ -16,56 +13,30 @@ const ListaPagos = ({ user }) => {
     getPagos();
   }, []);
 
-  // Obtener pagos desde el backend
   const getPagos = async () => {
     try {
       const res = await axios.get(URI);
-      console.log("Respuesta del servidor:", res.data);
       if (Array.isArray(res.data)) {
         setPagos(res.data);
-      } else if (res.data && res.data.results) {
-        setPagos(res.data.results);
       } else {
-        console.error("Error: La respuesta no es un array ni contiene los datos esperados");
+        console.error("Error: La respuesta no es un array");
       }
     } catch (error) {
       console.error("Error al obtener pagos", error);
     }
   };
 
-  // Eliminar un pago por ID
-  const deletePagos = async (id) => {
-    if (!id) {
-      console.error("ID inválido:", id);
-      return;
-    }
-    const confirmDelete = window.confirm("¿Estás seguro de que deseas eliminar este pago?");
-    if (confirmDelete) {
-      try {
-        console.log("Intentando eliminar el pago con ID:", id);
-        const res = await axios.delete(`${URI}${id}`);
-        if (res.status === 200) {
-          console.log("Pago eliminado con éxito");
-          getPagos();
-        } else {
-          console.error("Error al eliminar pago: ", res.status, res.statusText);
-        }
-      } catch (error) {
-        console.error("Error al eliminar pago", error);
-      }
-    }
-  };
 
-  // Filtrar los pagos por apellido
   const handleFilterChange = (e) => {
     setFilter(e.target.value);
   };
 
-  // Filtrar pagos por el apellido ingresado
   const filteredPagos = pagos.filter(
-    (pago) => pago.apellido && pago.apellido.toLowerCase().includes(filter.toLowerCase())
+    (pago) =>
+      pago.apellidoAlumno &&
+      pago.apellidoAlumno.toLowerCase().includes(filter.toLowerCase())
   );
-
+  
   return (
     <>
       <h2>Lista de Pagos</h2>
@@ -77,27 +48,59 @@ const ListaPagos = ({ user }) => {
           onChange={handleFilterChange}
         />
       </div>
-      <div className="container-cards">
+      {/* Presentacion en tablas */}
+      <table className="table-responsive">
+        <thead>
+          <tr>
+            <th>Nombres</th>
+            <th>Apellido</th>
+            <th>DNI</th>
+            <th>Cuotas Pagadas</th>
+            <th>Cuotas Restantes</th>
+            <th>Ultimo Importe<br /> Ingresado</th>
+            <th>Ultimo N°<br /> Comprobante</th>
+            <th>Forma de Pago</th>
+            <th>Importe Restante</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredPagos.length > 0 ? (
+          filteredPagos.map((pago,index) => (
+            <tr key={pago.id || `${pago.apellidoAlumno}-${index}`}>
+              <td className="nombres">{pago.nombreAlumno}</td>
+              <td className="apellido">{pago.apellidoAlumno}</td>
+              <td className="dni">{pago.dniAlumno}</td>
+              <td className="cuotasPagadas">{pago.cuotasPagadas}</td>
+              <td className="cuotasRestantes">{pago.totalCuotas-pago.cuotasPagadas}</td>
+              <td className="ultimoImporte">$ {pago.importe}</td>
+              <td>{pago.comprobante}</td>
+              <td>{pago.tipoPago}</td>
+              <td className="importe">$ {pago.montoPorCuota}</td>
+            </tr>
+          )))
+          : (
+            <p>No se encontraron pagos para el apellido ingresado.</p>
+          )}
+          
+        </tbody>
+      </table>
+      {/* presentacion en cards */}
+
+      {/* <div className="container-cards">
         <div className="cards">
           {filteredPagos.length > 0 ? (
             filteredPagos.map((pago, index) => (
-              <div key={pago.id || `${pago.apellido}-${index}`} id="card">
+              <div key={pago.id || `${pago.apellidoAlumno}-${index}`} id="card">
                 <div className="headerCard">
-                  <p>Nombres: {pago.nombres}</p>
-                  <p>Apellido: {pago.apellido}</p>
-                  <p>DNI: {pago.dni}</p>
-                  <p>Tipo de Pago: {pago.tipoPago}</p>
-                  <p>Importe Abonado: {pago.importe}</p>
-                  <p>Número de Cuota: {pago.numCuota}</p>
+                  <p>Nombres: {pago.nombreAlumno}</p>
+                  <p>Apellido: {pago.apellidoAlumno}</p>
+                  <p>DNI: {pago.dniAlumno}</p>
+                  <p>Cuotas Pagadas: {pago.cuotasPagadas}</p>
+                  <p>Importe Restante: ${pago.montoPorCuota}</p>
+                  <p>Cuotas Restantes: {pago.totalCuotas-pago.cuotasPagadas}</p>
+                  <p>Ultimo Importe ingresado: ${pago.importe}</p>
+                  
                 </div>
-                {user === 1 && (
-                  <button
-                    className="btn btn-danger"
-                    onClick={() => deletePagos(pago.id)}
-                  >
-                    <i className="fas fa-trash-alt"></i>
-                  </button>
-                )}
                 <hr />
               </div>
             ))
@@ -105,7 +108,7 @@ const ListaPagos = ({ user }) => {
             <p>No se encontraron pagos para el apellido ingresado.</p>
           )}
         </div>
-      </div>
+      </div> */}
     </>
   );
 };
