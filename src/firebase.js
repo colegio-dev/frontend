@@ -5,12 +5,18 @@ import 'firebase/firestore';
 
 
 const firebaseConfig = {
-  apiKey: "AIzaSyA3afz-yIQD1kWIrEQIAmFejfpl-3QjaQ0",
-  authDomain: "facturador-colegio.firebaseapp.com",
-  projectId: "facturador-colegio",
-  storageBucket: "facturador-colegio.appspot.com",
-  messagingSenderId: "968282073487",
-  appId: "1:968282073487:web:d80d45e112db0a615543fa"
+  apiKey: "AIzaSyAzmCbsaj4r-houjtt7aEXsAqPb2iYLn98",
+
+  authDomain: "colegio-1be4f.firebaseapp.com",
+
+  projectId: "colegio-1be4f",
+
+  storageBucket: "colegio-1be4f.firebasestorage.app",
+
+  messagingSenderId: "379186352140",
+  
+  appId: "1:379186352140:web:2b5cb38764fcd1ba265e29"
+
 };
 
 // Initialize Firebase
